@@ -1,0 +1,29 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
+def generate_tree(nodes, children_per_node):
+    G = nx.Graph()
+    node_count = 0
+    queue = [0]
+    while node_count < nodes:
+        parent = queue.pop(0)
+        for _ in range(children_per_node):
+            node_count += 1
+            G.add_edge(parent, node_count)
+            queue.append(node_count)
+    return G
+
+def visualize_graph(G, traversal_type="dfs"):
+    pos = nx.nx_pydot.pydot_layout(G, prog='dot')
+    nx.draw(G, pos, with_labels=True, node_size=700, node_color="skyblue", font_size=12, font_weight="bold")
+    plt.title(f"Visualization of a Tree ({traversal_type.upper()})")
+    plt.show()
+
+# Generate a tree with 20 nodes, each having 2 children
+tree = generate_tree(nodes=20, children_per_node=2)
+
+# Visualize the tree using DFS
+visualize_graph(tree, traversal_type="dfs")
+
+# Visualize the tree using BFS (uncomment to display)
+# visualize_graph(tree, traversal_type="bfs")
